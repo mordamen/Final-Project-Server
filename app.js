@@ -10,6 +10,24 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 app.use(morgan(chalk.cyan(":method :url :status :response-time ms")));
+
+// Add CORS headers middleware
+app.use((req, res, next) => {
+  // Allow requests from a specific origin
+  res.setHeader('Access-Control-Allow-Origin', 'https://final-project-website-zeta.vercel.app');
+
+  // Allow specific HTTP methods
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+
+  // Allow custom headers
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Allow credentials (if needed)
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  next();
+});
+
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", usersRouter);

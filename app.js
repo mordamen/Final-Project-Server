@@ -8,32 +8,46 @@ const cardsRouter = require("./Routes/Cards/cardsRouter");
 const chalk = require("chalk");
 const morgan = require("morgan");
 const cors = require("cors");
+const dateFormat = require("dateformat");
 
-app.use(morgan(chalk.cyan(":method :url :status :response-time ms")));
+// Custom token for morgan logger
+morgan.token("timestamp", () => dateFormat(new Date(), "isoDateTime"));
+
+app.use(
+  morgan(
+    chalk.cyan(":timestamp :method :url :status :response-time ms"),
+    {
+      immediate: true,
+    }
+  )
+);
+
+app.use(cors());
+app.use(express.json());
 
 // Add CORS headers middleware
 app.use((req, res, next) => {
   // Allow requests from a specific origin
-  res.setHeader('Access-Control-Allow-Origin', 'https://final-project-website-zeta.vercel.app');
+  res.setHeader("Access-Control-Allow-Origin", "https://final-project-website-zeta.vercel.app");
 
   // Allow specific HTTP methods
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
 
   // Allow custom headers
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   // Allow credentials (if needed)
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   next();
 });
 
-app.use(cors());
-app.use(express.json());
 app.use("/api/users", usersRouter);
 app.use("/api/cards", cardsRouter);
 
 const PORT = 8181;
 app.listen(PORT, () =>
-  console.log(chalk.blueBright.bold(`server run on: http://localhost:${PORT}`))
+  console.log(
+    chalk.blueBright.bold(`server run on: http://localhost:${PORT}`)
+  )
 );

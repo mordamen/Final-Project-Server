@@ -11,34 +11,55 @@ const cors = require("cors");
 const dateFormat = require("dateformat");
 
 // Custom token for morgan logger
-morgan.token("timestamp", () => dateFormat(new Date(), "isoDateTime"));
+// morgan.token("timestamp", () => dateFormat(new Date(), "isoDateTime"));
 
-app.use(
-  morgan(
-    chalk.cyan("Timestamp: :timestamp, Method: :method, URL: :url, Status: :status, Response Time: :response-time ms"),
-    {
-      immediate: true,
-    }
-  )
-);
+// app.use(
+//   morgan(
+//     chalk.cyan("Timestamp: :timestamp, Method: :method, URL: :url, Status: :status, Response Time: :response-time ms"),
+//     {
+//       immediate: true,
+//     }
+//   )
+// );
 
+const customFormat = (tokens, req, res) => {
+  return (
+    "Method: " + chalk.green.bold(tokens.method(req, res)) +
+    " " +
+    "URL: " + chalk.yellow.bold(tokens.url(req, res)) +
+    " " +
+    "Status: " + chalk.blue.bold(tokens.status(req, res)) +
+    " " +
+    "Timestamp: " + chalk.white.bold("[" + new Date().toLocaleTimeString() + "]") +
+    " " +
+    "Response Time: " + chalk.magenta.bold(tokens["response-time"](req, res) + " ms")
+  );
+};
 
 // Add CORS headers middleware
-app.use((req, res, next) => {
-  // Allow requests from a specific origin
-  res.setHeader("Access-Control-Allow-Origin", "https://final-project-website-zeta.vercel.app");
-
-  // Allow specific HTTP methods
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
-
-  // Allow custom headers
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  // Allow credentials (if needed)
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
+const corsMiddleware = (req, res, next) => {
+    // Allow requests from any origin
+  res.setHeader("Access-Control-Allow-Origin", "*");
+   // Allow specific HTTP methods
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE"
+  );
+    // Allow custom headers
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+    // Allow credentials (if needed)
+  res.setHeader("Access-Control-Allow-Credentials", true);
   next();
-});
+};
+
+app.use(morgan(customFormat),
+  {
+    immediate: true,
+  }
+);
 
 app.use(cors());
 app.use(express.json());

@@ -10,18 +10,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const dateFormat = require("dateformat");
 
-// Custom token for morgan logger
-// morgan.token("timestamp", () => dateFormat(new Date(), "isoDateTime"));
-
-// app.use(
-//   morgan(
-//     chalk.cyan("Timestamp: :timestamp, Method: :method, URL: :url, Status: :status, Response Time: :response-time ms"),
-//     {
-//       immediate: true,
-//     }
-//   )
-// );
-
 const customFormat = (tokens, req, res) => {
   return (
     "Timestamp: " + chalk.white.bold(new Date().toLocaleTimeString()) +

@@ -15,15 +15,13 @@ morgan.token("timestamp", () => dateFormat(new Date(), "isoDateTime"));
 
 app.use(
   morgan(
-    chalk.cyan(":timestamp :method :url :status :response-time ms"),
+    chalk.cyan("Timestamp: :timestamp, Method: :method, URL: :url, Status: :status, Response Time: :response-time ms"),
     {
       immediate: true,
     }
   )
 );
 
-app.use(cors());
-app.use(express.json());
 
 // Add CORS headers middleware
 app.use((req, res, next) => {
@@ -42,12 +40,15 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cors());
+app.use(express.json());
+
 app.use("/api/users", usersRouter);
 app.use("/api/cards", cardsRouter);
 
 const PORT = 8181;
 app.listen(PORT, () =>
   console.log(
-    chalk.blueBright.bold(`server run on: http://localhost:${PORT}`)
+    chalk.blueBright.bold(`Server running on: http://localhost:${PORT}`)
   )
 );

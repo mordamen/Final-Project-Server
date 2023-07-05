@@ -24,14 +24,14 @@ const dateFormat = require("dateformat");
 
 const customFormat = (tokens, req, res) => {
   return (
+    "Timestamp: " + chalk.white.bold(new Date().toLocaleTimeString()) +
+    " | " +
     "Method: " + chalk.green.bold(tokens.method(req, res)) +
-    " " +
+    " | " +
     "URL: " + chalk.yellow.bold(tokens.url(req, res)) +
-    " " +
+    " | " +
     "Status: " + chalk.blue.bold(tokens.status(req, res)) +
-    " " +
-    "Timestamp: " + chalk.white.bold("[" + new Date().toLocaleTimeString() + "]") +
-    " " +
+    " | " +
     "Response Time: " + chalk.magenta.bold(tokens["response-time"](req, res) + " ms")
   );
 };

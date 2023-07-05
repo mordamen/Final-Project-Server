@@ -55,11 +55,7 @@ const corsMiddleware = (req, res, next) => {
   next();
 };
 
-app.use(morgan(customFormat),
-  {
-    immediate: true,
-  }
-);
+app.use(morgan(customFormat));
 
 app.use(cors());
 app.use(express.json());

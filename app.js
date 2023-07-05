@@ -8,7 +8,7 @@ const cardsRouter = require("./Routes/Cards/cardsRouter");
 const chalk = require("chalk");
 const morgan = require("morgan");
 const cors = require("cors");
-const dateFormat = require("dateformat");
+
 
 const customFormat = (tokens, req, res) => {
   return (
@@ -43,10 +43,10 @@ const corsMiddleware = (req, res, next) => {
   next();
 };
 
-app.use(morgan(customFormat));
-
 app.use(cors());
 app.use(express.json());
+
+app.use(morgan(customFormat));
 
 app.use("/api/users", usersRouter);
 app.use("/api/cards", cardsRouter);

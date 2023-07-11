@@ -1,5 +1,4 @@
 require("./DB/connectToDb");
-// require("./primeryData/primeryCards")();
 const express = require("express");
 const app = express();
 
@@ -7,7 +6,7 @@ const usersRouter = require("./Routes/Users/userRouter");
 const cardsRouter = require("./Routes/Cards/cardsRouter");
 const chalk = require("chalk");
 const morgan = require("morgan");
-// const cors = require("cors");
+const cors = require("cors");
 
 
 const customFormat = (tokens, req, res) => {
@@ -43,7 +42,7 @@ const corsMiddleware = (req, res, next) => {
   next();
 };
 
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 
 app.use(morgan(customFormat));
